@@ -46,22 +46,26 @@ void Tree<T>::Add( T key )
 	Node<T>* current_node = root;
 	while( true )
 	{
+		// Создание левого листа
 		if( current_node->left == nullptr && key < current_node->value )
 		{
 			current_node->left = new Node<T>;
 			current_node->left->value = key;
 			return;
 		}
+		// Создание правого листа
 		else if( current_node->right == nullptr && key >= current_node->value )
 		{
 			current_node->right = new Node<T>;
 			current_node->right->value = key;
 			return;
 		}
+		// Переход в левое поддерево
 		else if( current_node->left != nullptr && key < current_node->value )
 		{
 			current_node = current_node->left;
 		}
+		// Переход в правое поддерево
 		else if( current_node->right != nullptr && key >= current_node->value )
 		{
 			current_node = current_node->right;
@@ -74,6 +78,8 @@ void Tree<T>::PrintInOrder()
 {
 	std::stack< Node<T>* > nodes;
 
+	// Обход для текущей вершины:
+	// Левое поддерево - текущая вершина - правое поддерево
 	Node<T>* current_node = root;
 	while( !nodes.empty() || current_node != nullptr )
 	{
