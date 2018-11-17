@@ -1,3 +1,16 @@
+// Задача 2_2
+// Contest link: https://contest.yandex.ru/contest/9657/problems/2_2/
+//
+// Дано число N < 10^6 и последовательность пар целых чисел из [-2^31, 2^31] длиной N.
+//
+// Построить декартово дерево из N узлов, характеризующихся парами чисел (Xi, Yi).
+// Каждая пара чисел (Xi, Yi) определяет ключ Xi и приоритет Yi в декартовом дереве.
+//
+// Построить также наивное дерево поиска по ключам Xi. Равные ключи добавляйте в правое поддерево.
+//
+// Вычислить количество узлов в самом широком слое декартового дерева и количество узлов
+// в самом широком слое наивного дерева поиска. Вывести их разницу. Разница может быть отрицательна.
+
 #include <iostream>
 #include <stack>
 #include <queue>
@@ -90,7 +103,9 @@ public:
 private:
     TreapNode<T1, T2>* root; // Корень дерева
 
-    // Split возвращает пару указателей на правое и лефое получившееся поддеревья
+    // Разбивает дерево с вершиной на два по ключу key
+    // Левое поддерево оказывается в left
+    // Правое - в right
     void Split( TreapNode<T1, T2>* current_node, int key, TreapNode<T1, T2>*& left,  TreapNode<T1, T2>*& right );
 };
 
@@ -190,6 +205,7 @@ void Treap<T1, T2>::Insert( T1 key, T2 priority )
 	TreapNode<T1, T2>* current_node_parent;
 	bool is_current_node_left_child = true;
 
+    // Спуск по дереву до тех пор, пока не будет вершины с меньшим приоритетом, чем у добавляемой
 	while( current_node != nullptr && current_node->y >= priority ){
 		current_node_parent = current_node;
 		
@@ -203,6 +219,8 @@ void Treap<T1, T2>::Insert( T1 key, T2 priority )
 		}
 	}
 
+    // Указатель на объект добавляемой вершины для удобной встаки в дерево
+    // Её left и right указатели будут использованы в Split'е исходного дерева
 	TreapNode<T1, T2>* inserting_node = new TreapNode<T1, T2>( key, priority );
     
     Split( current_node, key, inserting_node->left, inserting_node->right );
@@ -238,6 +256,8 @@ int Treap<T1, T2>::GetMaxWidth()
 {
     int max_width = 0;
 
+    // Обход дерева в ширину
+    // Запись кол-ва вершин на уровне ==> удаление всех текущих вершин с добавлением их дочерних
     std::queue< TreapNode<T1, T2>* > nodes;
     nodes.push( root );
 
