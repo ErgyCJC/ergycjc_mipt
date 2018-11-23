@@ -127,7 +127,7 @@ private:
 		return node->count;
 	}
 
-	void FixCount (Node* node )
+	void FixCount( Node* node )
 	{
 		node->count = ( Count(node->left ) + Count( node->right) ) + 1;
 	}
@@ -211,7 +211,7 @@ private:
 		Node* result_node = node;
 		if( BalanceFactor(node) == 2 ){ // Требуется правый поворот
 
-			if(BalanceFactor(node->left) < 0 ){ // Требуется малый правый поворот
+			if(BalanceFactor(node->left) < 0 ){ // Требуется большой правый поворот
 				result_node = node->left;
 				node->left = node->left->right;
 				LeftRotate( result_node );
