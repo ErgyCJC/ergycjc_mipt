@@ -1,5 +1,16 @@
+// Задача 2.2
+// Contest link: https://contest.yandex.ru/contest/6512/problems/2_2
+//
+// В большой IT-фирме есть только одна переговорная комната.
+// Желающие посовещаться заполняют заявки с желаемым временем начала и конца.
+// Ваша задача определить максимальное количество заявок, которое может быть удовлетворено.
+// Число заявок <= 100000.
+//
+// Вход содержит только пары целых чисел — начала и концы заявок.
+// Выход должен содержать натуральное число — максимальное число заявок.
+
 #include <iostream>
-#include <algorithm>
+#include <algoritm> // std::sort
 #include <vector>
 
 // Заявка на переговорку [begin --- end]
@@ -11,7 +22,7 @@ struct Request
 	Request( int begin_, int end_ ) : begin( begin_ ), end( end_ ) {}
 };
 
-// Функция сравнения 
+// Функция сравнения для сортировки заявок в порядке невозрастания времени окончания
 bool requestCompare( const Request& obj1, const Request& obj2 )
 {
 	if( obj1.end == obj2.end ){
@@ -21,6 +32,7 @@ bool requestCompare( const Request& obj1, const Request& obj2 )
 	return obj1.end < obj2.end;
 }
 
+// Максимальное кол-во заявок, которые можно удовлетворить
 unsigned int validRequestsCount( const std::vector<Request>& requests )
 {
 	unsigned int max_count = 0;
