@@ -1,5 +1,5 @@
 // Задача 2.2
-// Contest link: https://contest.yandex.ru/contest/6512/problems/2_2
+// Contest link: https://contest.yandex.ru/contest/10866/problems/2_2
 //
 // В большой IT-фирме есть только одна переговорная комната.
 // Желающие посовещаться заполняют заявки с желаемым временем начала и конца.
