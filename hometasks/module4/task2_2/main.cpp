@@ -10,7 +10,7 @@
 // Выход должен содержать натуральное число — максимальное число заявок.
 
 #include <iostream>
-#include <algoritm> // std::sort
+#include <algorithm> // std::sort
 #include <vector>
 
 // Заявка на переговорку [begin --- end]
