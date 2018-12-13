@@ -77,7 +77,7 @@ void Graph::setHeights( int index )
 {
 	// DFS
 	for( int i = 0; i < connections[index].size(); ++i ){
-		if( connections[index][i] != parents[index] ){
+		if( connections[index][i] != parents[index] ){  // Не закольцовываемся на родительскую вершину
 			setHeights( connections[index][i] );
 
 			if( heights[ connections[index][i] ] + 1 > heights[index] ){
@@ -97,7 +97,7 @@ void Graph::setRootWays( int index )
     for( int i = 0; i < connections[index].size(); ++i ){
 		int current_index = connections[index][i];
 
-        if( current_index != parents[index] ){
+        if( current_index != parents[index] ){ // Не закольцовываемся на родительскую вершину
 			if( maxSubHeight1 <= heights[current_index] + 1 ){
 				maxSubIndex2 = maxSubIndex1;
 				maxSubHeight2 = maxSubHeight1;
@@ -116,7 +116,7 @@ void Graph::setRootWays( int index )
     for( int i = 0; i < connections[index].size(); ++i ){
 		int next_index = connections[index][i];
 
-		if( next_index != parents[index] ){
+		if( next_index != parents[index] ){  // Не закольцовываемся на родительскую вершину
 			if (next_index == maxSubIndex1) {
 				rootWays[next_index] = std::max(rootWays[index], maxSubHeight2) + 1;
 			} else {
