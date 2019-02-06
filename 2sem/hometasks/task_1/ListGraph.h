@@ -1,6 +1,6 @@
 #pragma once
 
-#include "igraph.h"
+#include "IGraph.h"
 #include <vector>
 
 class ListGraph : public IGraph {
