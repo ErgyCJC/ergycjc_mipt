@@ -5,7 +5,6 @@
 struct IGraph {
   virtual ~IGraph() {}
 
-  // Добавление ребра от from к to.
   virtual void AddEdge(int from, int to) = 0;
 
   virtual int VerticesCount() const = 0;
