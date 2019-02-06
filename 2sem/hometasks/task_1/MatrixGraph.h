@@ -6,6 +6,8 @@
 class MatrixGraph : public IGraph {
 public:
   MatrixGraph(int verticesCount);
+
+  MatrixGraph(const IGraph* source_graph);
   
   virtual ~MatrixGraph();
 

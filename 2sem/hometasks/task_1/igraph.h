@@ -3,6 +3,7 @@
 #include <vector>
 
 struct IGraph {
+
   virtual ~IGraph() {}
 
   virtual void AddEdge(int from, int to) = 0;

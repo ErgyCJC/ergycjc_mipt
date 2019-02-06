@@ -4,6 +4,18 @@ ListGraph::ListGraph(int verticesCount) {
   neighbours.resize(verticesCount);
 }
 
+ListGraph::ListGraph(const IGraph* source_graph) {
+  ListGraph(source_graph->VerticesCount());
+  std::vector<int> children;
+
+    for (int i = 0; i < VerticesCount(); ++i) {
+        source_graph->GetNextVertices(i, children);
+        for (size_t v = 0; v < children.size(); ++v ) {
+            AddEdge(i, children[v]);
+        }
+    }
+}
+
 ListGraph::~ListGraph() {}
 
 void ListGraph::AddEdge(int from, int to) {

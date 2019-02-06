@@ -7,6 +7,8 @@ class ListGraph : public IGraph {
 public:
   ListGraph(int verticesCount);
   
+  ListGraph(const IGraph* source_graph);
+  
   virtual ~ListGraph();
 
   virtual void AddEdge(int from, int to);

@@ -6,7 +6,9 @@
 
 class ArcGraph : public IGraph {
 public:
-  ArcGraph(const int verticesCount);
+  ArcGraph(const int _vertices_count);
+
+  ArcGraph(const IGraph* source_graph);
   
   virtual ~ArcGraph();
 
