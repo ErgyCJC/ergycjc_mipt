@@ -1,0 +1,35 @@
+#include "SetGraph.h"
+
+SetGraph::SetGraph(int verticesCount) {
+  neighbours.resize(verticesCount);
+}
+
+SetGraph::~SetGraph() {}
+
+void SetGraph::AddEdge(int from, int to) {
+  neighbours[from].insert({to, true});
+}
+
+int SetGraph::VerticesCount() const {
+  return static_cast<int>(neighbours.size());
+}
+
+void SetGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
+  vertices.clear();
+  
+  for (size_t i = 0; i < neighbours.size(); ++i) {
+      if (neighbours[vertex].find(i) != neighbours[vertex].end()) {
+          vertices.push_back(static_cast<int>(i));
+      }
+  }
+}
+
+void SetGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
+  vertices.clear();
+
+  for (size_t i = 0; i < neighbours.size(); ++i) {
+      if (neighbours[i].find(vertex) != neighbours[i].end()) {
+          vertices.push_back(static_cast<int>(i));
+      }
+  }
+}
