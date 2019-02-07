@@ -7,7 +7,7 @@ class ListGraph : public IGraph {
 public:
   ListGraph(int verticesCount);
   
-  ListGraph(const IGraph& source_graph);
+  ListGraph(const IGraph* source_graph);
   
   virtual ~ListGraph();
 

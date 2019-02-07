@@ -7,12 +7,15 @@ MatrixGraph::MatrixGraph(int verticesCount) {
   }
 }
 
-MatrixGraph::MatrixGraph(const IGraph& source_graph) {
-  MatrixGraph(source_graph.VerticesCount());
-  std::vector<int> children;
+MatrixGraph::MatrixGraph(const IGraph* source_graph) {
+  matrix.resize(source_graph->VerticesCount());
+  for(size_t i = 0; i < VerticesCount(); ++i) {
+      matrix[i].resize(VerticesCount(), -1);
+  }
 
+  std::vector<int> children;
     for (int i = 0; i < VerticesCount(); ++i) {
-        source_graph.GetNextVertices(i, children);
+        source_graph->GetNextVertices(i, children);
         for (size_t v = 0; v < children.size(); ++v ) {
             AddEdge(i, children[v]);
         }

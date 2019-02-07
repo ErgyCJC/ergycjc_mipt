@@ -4,12 +4,12 @@ SetGraph::SetGraph(int verticesCount) {
   neighbours.resize(verticesCount);
 }
 
-SetGraph::SetGraph(const IGraph& source_graph) {
-  SetGraph(source_graph.VerticesCount());
+SetGraph::SetGraph(const IGraph* source_graph) {
+  neighbours.resize(source_graph->VerticesCount());
   std::vector<int> children;
 
     for (int i = 0; i < VerticesCount(); ++i) {
-        source_graph.GetNextVertices(i, children);
+        source_graph->GetNextVertices(i, children);
         for (size_t v = 0; v < children.size(); ++v ) {
             AddEdge(i, children[v]);
         }
