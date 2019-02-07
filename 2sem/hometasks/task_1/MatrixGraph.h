@@ -12,6 +12,11 @@ public:
   virtual ~MatrixGraph();
 
   virtual void AddEdge(int from, int to);
+  
+  void AddEdge(int from, int to, int weight);
+
+  // Returns -1 of the edge doesn't exist
+  int GetEdgeWeight(const int from, const int to) const;
 
   virtual int VerticesCount() const;
 
@@ -21,5 +26,5 @@ public:
                                std::vector<int> &vertices) const;
 
 private:
-  std::vector< std::vector<bool> > matrix;
+  std::vector< std::vector<int> > matrix;
 };

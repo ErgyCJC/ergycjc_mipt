@@ -19,7 +19,21 @@ SetGraph::SetGraph(const IGraph& source_graph) {
 SetGraph::~SetGraph() {}
 
 void SetGraph::AddEdge(int from, int to) {
-  neighbours[from].insert({to, true});
+  neighbours[from].insert({to, 1});
+}
+
+void SetGraph::AddEdge(int from, int to, int weight) {
+  neighbours[from].insert({to, weight});
+}
+
+int SetGraph::GetEdgeWeight(const int from, const int to) const {
+  if (neighbours[from].find(to) != neighbours[from].end()) {
+    return neighbours[from].at(to);
+  }
+  else {
+    return -1;
+  }
+  
 }
 
 int SetGraph::VerticesCount() const {

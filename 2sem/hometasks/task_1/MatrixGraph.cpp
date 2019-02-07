@@ -3,7 +3,7 @@
 MatrixGraph::MatrixGraph(int verticesCount) {
   matrix.resize(verticesCount);
   for(size_t i = 0; i < verticesCount; ++i) {
-      matrix[i].resize(verticesCount, false);
+      matrix[i].resize(verticesCount, -1);
   }
 }
 
@@ -22,7 +22,15 @@ MatrixGraph::MatrixGraph(const IGraph& source_graph) {
 MatrixGraph::~MatrixGraph() {}
 
 void MatrixGraph::AddEdge(int from, int to) {
-  matrix[from][to] = true;
+  matrix[from][to] = 1;
+}
+
+void MatrixGraph::AddEdge(int from, int to, int weight) {
+  matrix[from][to] = weight;
+}
+
+int MatrixGraph::GetEdgeWeight(const int from, const int to) const {
+  return matrix[from][to];
 }
 
 int MatrixGraph::VerticesCount() const {
@@ -33,7 +41,7 @@ void MatrixGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const 
   vertices.clear();
   
   for (size_t i = 0; i < matrix.size(); ++i) {
-      if (matrix[vertex][i]) {
+      if (matrix[vertex][i] != -1) {
           vertices.push_back(static_cast<int>(i));
       }
   }
@@ -43,7 +51,7 @@ void MatrixGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const 
   vertices.clear();
 
   for (size_t i = 0; i < matrix.size(); ++i) {
-      if (matrix[i][vertex]) {
+      if (matrix[i][vertex] != -1) {
           vertices.push_back(static_cast<int>(i));
       }
   }
