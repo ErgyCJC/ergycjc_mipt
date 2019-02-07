@@ -2,11 +2,11 @@
 
 ArcGraph::ArcGraph(const int _vertices_count) : vertices_count(_vertices_count) {}
 
-ArcGraph::ArcGraph(const IGraph* source_graph) : vertices_count(source_graph->VerticesCount()) {
+ArcGraph::ArcGraph(const IGraph& source_graph) : vertices_count(source_graph.VerticesCount()) {
     std::vector<int> children;
 
     for (int i = 0; i < VerticesCount(); ++i) {
-        source_graph->GetNextVertices(i, children);
+        source_graph.GetNextVertices(i, children);
         for (size_t v = 0; v < children.size(); ++v ) {
             AddEdge(i, children[v]);
         }

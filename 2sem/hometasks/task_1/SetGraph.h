@@ -8,7 +8,7 @@ class SetGraph : public IGraph {
 public:
   SetGraph(int verticesCount);
 
-  SetGraph(const IGraph* source_graph);
+  SetGraph(const IGraph& source_graph);
   
   virtual ~SetGraph();
 
