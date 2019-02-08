@@ -9,16 +9,16 @@ public:
   
   ListGraph(const IGraph* source_graph);
   
-  virtual ~ListGraph();
+  virtual ~ListGraph() override;
 
-  virtual void AddEdge(int from, int to);
+  virtual void AddEdge(int from, int to) override;
 
-  virtual int VerticesCount() const;
+  virtual int VerticesCount() const override;
 
   virtual void GetNextVertices(int vertex,
-                               std::vector<int> &vertices) const;
+                               std::vector<int> &vertices) const override;
   virtual void GetPrevVertices(int vertex,
-                               std::vector<int> &vertices) const;
+                               std::vector<int> &vertices) const override;
 
 private:
   std::vector< std::vector<int> > neighbours;

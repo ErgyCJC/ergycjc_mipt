@@ -10,16 +10,16 @@ public:
 
   ArcGraph(const IGraph* source_graph);
   
-  virtual ~ArcGraph();
+  virtual ~ArcGraph() override;
 
-  virtual void AddEdge(int from, int to);
+  virtual void AddEdge(int from, int to) override;
 
-  virtual int VerticesCount() const;
+  virtual int VerticesCount() const override;
 
   virtual void GetNextVertices(int vertex,
-                               std::vector<int> &vertices) const;
+                               std::vector<int> &vertices) const override;
   virtual void GetPrevVertices(int vertex,
-                               std::vector<int> &vertices) const;
+                               std::vector<int> &vertices) const override;
 
 private:
   std::vector< std::pair<int, int> > edges;
