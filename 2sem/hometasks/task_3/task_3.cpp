@@ -47,10 +47,11 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
     std::queue<int> bfs_queue;
     bfs_queue.push(root_v);
 
-    // 0 - unmarked; 1 - white; 2 - black
+    // 0 - unmarked; 1 - first part; 2 - second part
     std::vector<int> colors(graph.VerticesCount(), 0);
     colors[root_v] = 1;
 
+    // BFS
     while (!bfs_queue.empty()) {
         int current_v = bfs_queue.front();
         bfs_queue.pop();
@@ -59,10 +60,12 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
         graph.GetNextVertices(current_v, children);
 
         for (auto v : children) {
+            // Two connected vertices from the same part
             if (visited[v] && colors[v] == colors[current_v]) {
                 return false;
             }
-
+            
+            // Going into a new vertex
             if (!visited[v]) {
                 visited[v] = true;
                 colors[v] = colors[current_v] == 1 ? 2 : 1;
@@ -78,6 +81,7 @@ bool isBigraph(const ListGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     bool is_bigraph_flag = true;
 
+    // Bigraph-check for each connectivity component of the graph
     for (int i = 0; i < graph.VerticesCount(); ++i) {
         if (!visited[i]) {
             visited[i] = true;
