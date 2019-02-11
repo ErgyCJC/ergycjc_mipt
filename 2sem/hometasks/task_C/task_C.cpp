@@ -71,7 +71,7 @@ int differentShortestWays(const int& from_v, const int& to_v, const ListGraph& g
     bfs_queue.pop();
 
     std::vector<int> children;
-    graph.GetNextVertices(current_v, children, false);
+    graph.GetNextVertices(current_v, children);
 
     for (auto v : children) {
       // One step difference between an optimal way and 'v' ==> going into the optimal way
