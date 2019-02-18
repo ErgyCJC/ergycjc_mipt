@@ -16,19 +16,39 @@
 
 //=================//=================//=================//=================//
 
-// Copy-paste graph implementation
-class ListGraph {
+// Copy-paste graph implementation (ListGraph)
+
+struct IGraph {
+
+  virtual ~IGraph() {}
+
+  virtual void AddEdge(int from, int to) = 0;
+
+  virtual int VerticesCount() const = 0;
+
+  virtual void GetNextVertices(int vertex,
+                               std::vector<int> &vertices) const = 0;
+  virtual void GetPrevVertices(int vertex,
+                               std::vector<int> &vertices) const = 0;
+};
+
+
+class ListGraph : public IGraph {
 public:
-    ListGraph(int vertices_count);
+  ListGraph(int verticesCount);
   
-    virtual ~ListGraph();
+  ListGraph(const IGraph* source_graph);
+  
+  virtual ~ListGraph() override;
 
-    virtual void AddEdge(int from, int to);
+  virtual void AddEdge(int from, int to) override;
 
-    virtual int VerticesCount() const;
+  virtual int VerticesCount() const override;
 
-    virtual void GetNextVertices(int vertex,
-                               std::vector<int> &vertices) const;
+  virtual void GetNextVertices(int vertex,
+                               std::vector<int> &vertices) const override;
+  virtual void GetPrevVertices(int vertex,
+                               std::vector<int> &vertices) const override;
 
 private:
   std::vector< std::vector<int> > neighbours;
@@ -36,6 +56,17 @@ private:
 
 ListGraph::ListGraph(int verticesCount) {
   neighbours.resize(verticesCount);
+}
+
+ListGraph::ListGraph(const IGraph* source_graph) : ListGraph(source_graph->VerticesCount()) {
+  std::vector<int> children;
+
+    for (int i = 0; i < VerticesCount(); ++i) {
+        source_graph->GetNextVertices(i, children);
+        for (size_t v = 0; v < children.size(); ++v ) {
+            AddEdge(i, children[v]);
+        }
+    }
 }
 
 ListGraph::~ListGraph() {}
@@ -53,8 +84,21 @@ void ListGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
   vertices = neighbours[vertex];
 }
 
+void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
+  vertices.clear();
+
+  for (size_t v = 0; v < neighbours.size(); ++v) {
+    for (size_t i = 0; i < neighbours[v].size(); ++i) {
+      if (neighbours[v][i] == vertex) {
+        vertices.push_back(v);
+      }
+    }
+  }
+}
+
 //=================//=================//=================//=================//
 
+// Returns some cycle length in current strongly connected part of graph or |V|+1 if it doesn't exist
 int CycleSearch(int root_v, ListGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     visited[root_v] = true;
@@ -92,18 +136,20 @@ int CycleSearch(int root_v, ListGraph& graph) {
         }
     }
 
+    // For being 'ignored' by min-function in GetMinCycle()
     return graph.VerticesCount() + 1;
 }
 
 // Returns min cycle length or -1 if it doesn't exist
 int GetMinCycle(ListGraph& graph) {
-    int min_cycle_length = graph.VerticesCount() + 1;
+  int min_cycle_length = graph.VerticesCount() + 1;
 
-    for (int i = 0; i < graph.VerticesCount(); ++i) {
-        min_cycle_length = std::min(CycleSearch(i, graph), min_cycle_length);
-    }
+  // This loop will find all cycles and will choose the shortest one if it exists
+  for (int i = 0; i < graph.VerticesCount(); ++i) {
+    min_cycle_length = std::min(CycleSearch(i, graph), min_cycle_length);
+  }
 
-    return (min_cycle_length == graph.VerticesCount() + 1 ? -1 : min_cycle_length);
+  return (min_cycle_length == graph.VerticesCount() + 1 ? -1 : min_cycle_length);
 }
 
 //=================//=================//=================//=================//
@@ -117,6 +163,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < edges_count; ++i) {
         std::cin >> from >> to;
         
+        // Undirected graph
         graph.AddEdge(from, to);
         graph.AddEdge(to, from);
     }

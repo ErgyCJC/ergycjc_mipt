@@ -1,31 +1,51 @@
-// Задача D
+// Task D
 
 // Contest link: https://contest.yandex.ru/contest/11884/problems/D/
 
 // Дан невзвешенный неориентированный граф. Определить, является ли он двудольным. Требуемая сложность O(V+E).
 // Ввод: v:кол-во вершин(макс. 50000), n:кол-во ребер(макс. 200000), n пар реберных вершин.
-// Вывод: YES если граф является двудольным, NO - если не является.
-
+// Вывод: YES если граф является двудольным, NO - если не является.s
 
 #include <iostream>
 #include <vector>
 #include <queue>
 
+// ---
 //=====================//=====================//=====================//=====================//
 
-// Copy-paste graph implementation
-class ListGraph {
+// Copy-paste graph implementation (ListGraph)
+
+struct IGraph {
+
+  virtual ~IGraph() {}
+
+  virtual void AddEdge(int from, int to) = 0;
+
+  virtual int VerticesCount() const = 0;
+
+  virtual void GetNextVertices(int vertex,
+                               std::vector<int> &vertices) const = 0;
+  virtual void GetPrevVertices(int vertex,
+                               std::vector<int> &vertices) const = 0;
+};
+
+
+class ListGraph : public IGraph {
 public:
-    ListGraph(int vertices_count);
+  ListGraph(int verticesCount);
   
-    virtual ~ListGraph();
+  ListGraph(const IGraph* source_graph);
+  
+  virtual ~ListGraph() override;
 
-    virtual void AddEdge(int from, int to);
+  virtual void AddEdge(int from, int to) override;
 
-    virtual int VerticesCount() const;
+  virtual int VerticesCount() const override;
 
-    virtual void GetNextVertices(int vertex,
-                               std::vector<int> &vertices) const;
+  virtual void GetNextVertices(int vertex,
+                               std::vector<int> &vertices) const override;
+  virtual void GetPrevVertices(int vertex,
+                               std::vector<int> &vertices) const override;
 
 private:
   std::vector< std::vector<int> > neighbours;
@@ -33,6 +53,17 @@ private:
 
 ListGraph::ListGraph(int verticesCount) {
   neighbours.resize(verticesCount);
+}
+
+ListGraph::ListGraph(const IGraph* source_graph) : ListGraph(source_graph->VerticesCount()) {
+  std::vector<int> children;
+
+    for (int i = 0; i < VerticesCount(); ++i) {
+        source_graph->GetNextVertices(i, children);
+        for (size_t v = 0; v < children.size(); ++v ) {
+            AddEdge(i, children[v]);
+        }
+    }
 }
 
 ListGraph::~ListGraph() {}
@@ -50,9 +81,20 @@ void ListGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
   vertices = neighbours[vertex];
 }
 
+void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
+  vertices.clear();
+
+  for (size_t v = 0; v < neighbours.size(); ++v) {
+    for (size_t i = 0; i < neighbours[v].size(); ++i) {
+      if (neighbours[v][i] == vertex) {
+        vertices.push_back(v);
+      }
+    }
+  }
+}
+
 //=====================//=====================//=====================//=====================//
 
-// Is strongly connected part of graph bigraph?
 bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int root_v) {
     std::queue<int> bfs_queue;
     bfs_queue.push(root_v);
@@ -71,7 +113,7 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
 
         for (auto v : children) {
             // Two connected vertices from the same part
-            if (visited[v] && colors[v] == colors[current_v]) {
+            if (visited[v] && colors[v] == colors[current_v] && v != current_v) {
                 return false;
             }
             
@@ -87,7 +129,6 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
     return true;
 }
 
-// Is graph bigraph?
 bool isBigraph(const ListGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     bool is_bigraph_flag = true;
@@ -97,6 +138,9 @@ bool isBigraph(const ListGraph& graph) {
         if (!visited[i]) {
             visited[i] = true;
             is_bigraph_flag = isBigraphPart(graph, visited, i);
+            if (!is_bigraph_flag) {
+              break;
+            }
         }
     }
 
@@ -108,12 +152,17 @@ bool isBigraph(const ListGraph& graph) {
 int main(int argc, char** argv) {
     int vertices_count, edges_count, from, to;
     std::cin >> vertices_count >> edges_count;
+
+    if (vertices_count == 0 || edges_count == 0) {
+      std::cout << "NO\n";
+      return 0;
+    }
     
     ListGraph graph(vertices_count);
     for (int i = 0; i < edges_count; ++i) {
         std::cin >> from >> to;
         
-        graph.AddEdge(from, to);
+        graph.AddEdge(from, to); // Undirected graph
         graph.AddEdge(to, from);
     }
 
