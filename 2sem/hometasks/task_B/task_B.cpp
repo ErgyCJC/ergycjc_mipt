@@ -1,4 +1,4 @@
-// Task 1.2
+// Task B
 
 // Дан невзвешенный неориентированный граф. Найдите цикл минимальной длины.
 // В первой строке вводятся два натуральных числа N и M, не превосходящих 10000.
@@ -83,7 +83,7 @@ int CycleSearch(int root_v, ListGraph& graph) {
                 visited[v] = true;
             }
             // Visited (grey) vertex found;
-            // It's a common cycle vertex if it isn't the parent of the current vertex
+            // It's a common cycle vertex if it isn't parent of the current vertex
             else if(v != parent[current_v]){ 
                 return  depth[v] + depth[current_v] + 1;
             }
