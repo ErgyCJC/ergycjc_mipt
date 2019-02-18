@@ -95,7 +95,7 @@ void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
 
 //=====================//=====================//=====================//=====================//
 
-bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int root_v) {
+bool isBigraphPart(const IGraph& graph, std::vector<bool>& visited, const int root_v) {
     std::queue<int> bfs_queue;
     bfs_queue.push(root_v);
 
@@ -129,7 +129,7 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
     return true;
 }
 
-bool isBigraph(const ListGraph& graph) {
+bool isBigraph(const IGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     bool is_bigraph_flag = true;
 

@@ -99,7 +99,7 @@ void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
 //=================//=================//=================//=================//
 
 // Returns some cycle length in current strongly connected part of graph or |V|+1 if it doesn't exist
-int CycleSearch(int root_v, ListGraph& graph) {
+int CycleSearch(int root_v, IGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     visited[root_v] = true;
 
@@ -141,7 +141,7 @@ int CycleSearch(int root_v, ListGraph& graph) {
 }
 
 // Returns min cycle length or -1 if it doesn't exist
-int GetMinCycle(ListGraph& graph) {
+int GetMinCycle(IGraph& graph) {
   int min_cycle_length = graph.VerticesCount() + 1;
 
   // This loop will find all cycles and will choose the shortest one if it exists

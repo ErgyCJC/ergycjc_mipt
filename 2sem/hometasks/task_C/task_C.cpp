@@ -95,7 +95,7 @@ void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
 //=====================//=====================//=====================//=====================//
 
 // Counts how many are there diffrenet ways with the same shortest length from 'from_v' to 'to_v'
-int differentShortestWays(const int& from_v, const int& to_v, const ListGraph& graph) {
+int differentShortestWays(const int& from_v, const int& to_v, const IGraph& graph) {
   int v_count = graph.VerticesCount(); // Vertices count
   std::vector<int> depth(v_count, 0); // Contains distances between each vertex and 'from_v'
   std::vector<int> ways(v_count, 0); // Contains for each vertex count of optimal ways goinf through it
