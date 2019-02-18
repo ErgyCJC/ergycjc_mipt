@@ -1,4 +1,4 @@
-// Задача 1_3 (C)
+// Задача C
 
 // Contest link: https://contest.yandex.ru/contest/11884/problems/C
 
