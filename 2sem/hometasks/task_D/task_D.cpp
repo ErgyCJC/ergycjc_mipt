@@ -1,3 +1,12 @@
+// Задача D
+
+// Contest link: https://contest.yandex.ru/contest/11884/problems/D/
+
+// Дан невзвешенный неориентированный граф. Определить, является ли он двудольным. Требуемая сложность O(V+E).
+// Ввод: v:кол-во вершин(макс. 50000), n:кол-во ребер(макс. 200000), n пар реберных вершин.
+// Вывод: YES если граф является двудольным, NO - если не является.
+
+
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -43,6 +52,7 @@ void ListGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
 
 //=====================//=====================//=====================//=====================//
 
+// Is strongly connected part of graph bigraph?
 bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int root_v) {
     std::queue<int> bfs_queue;
     bfs_queue.push(root_v);
@@ -77,6 +87,7 @@ bool isBigraphPart(const ListGraph& graph, std::vector<bool>& visited, const int
     return true;
 }
 
+// Is graph bigraph?
 bool isBigraph(const ListGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     bool is_bigraph_flag = true;
