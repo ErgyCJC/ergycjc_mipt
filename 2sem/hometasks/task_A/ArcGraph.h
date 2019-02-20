@@ -12,6 +12,8 @@ public:
   
   virtual ~ArcGraph() override;
 
+  ArcGraph& operator=(const IGraph& graph);
+
   virtual void AddEdge(int from, int to) override;
 
   virtual int VerticesCount() const override;
@@ -23,5 +25,5 @@ public:
 
 private:
   std::vector< std::pair<int, int> > edges;
-  const int vertices_count;
+  int vertices_count;
 };

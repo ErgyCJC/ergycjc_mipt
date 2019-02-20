@@ -11,6 +11,8 @@ public:
   
   virtual ~ListGraph() override;
 
+  ListGraph& operator=(const IGraph& graph);
+
   virtual void AddEdge(int from, int to) override;
 
   virtual int VerticesCount() const override;

@@ -11,6 +11,8 @@ public:
   
   virtual ~MatrixGraph() override;
 
+  MatrixGraph& operator=(const IGraph& graph);
+
   virtual void AddEdge(int from, int to) override;
   
   void AddEdge(int from, int to, int weight);

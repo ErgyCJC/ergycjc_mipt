@@ -41,3 +41,17 @@ void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
     }
   }
 }
+
+ListGraph& ListGraph::operator=(const IGraph& graph) {
+    neighbours.assign(graph.VerticesCount(), std::vector<int>());
+    for (int i = 0; i < VerticesCount(); ++i) {
+        std::vector<int> children;
+        graph.GetNextVertices(i, children);
+
+        for (auto v : children) {
+            AddEdge(i, v);
+        }
+    }
+
+    return *this;
+}

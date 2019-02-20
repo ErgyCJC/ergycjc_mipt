@@ -42,3 +42,19 @@ void ArcGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
         }
     }
 }
+
+ArcGraph& ArcGraph::operator=(const IGraph& graph) {
+    vertices_count = graph.VerticesCount();
+    edges.clear();
+    
+    for (int i = 0; i < vertices_count; ++i) {
+        std::vector<int> children;
+        graph.GetNextVertices(i, children);
+
+        for (auto v : children) {
+            AddEdge(i, v);
+        }
+    }
+
+    return *this;
+}

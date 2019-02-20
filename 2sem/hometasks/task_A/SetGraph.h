@@ -12,6 +12,8 @@ public:
   
   virtual ~SetGraph();
 
+  SetGraph& operator=(const IGraph& graph);
+
   virtual void AddEdge(int from, int to) override;
 
   // Positive weights only

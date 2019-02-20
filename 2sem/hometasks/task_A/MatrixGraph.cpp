@@ -54,3 +54,18 @@ void MatrixGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const 
       }
   }
 }
+
+MatrixGraph& MatrixGraph::operator=(const IGraph& graph) {
+  matrix.assign(graph.VerticesCount(), std::vector<int>(graph.VerticesCount(), 0));
+  
+  for (int i = 0; i < VerticesCount(); ++i) {
+        std::vector<int> children;
+        graph.GetNextVertices(i, children);
+
+        for (auto v : children) {
+            AddEdge(i, v);
+        }
+    }
+
+    return *this;
+}
