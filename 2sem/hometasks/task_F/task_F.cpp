@@ -116,15 +116,15 @@ public:
 
   // Counting edges to make graph strongly connected
   int SCAdding() {
-    current_index = 0;
-    scc_count = 0;
-    sc_components.assign(v_count, -1);
     properties.assign(v_count, VertexProperties());
+    global_index = 0;
 
-    // Tarjan algorithm for finding strongly connected components in graph
-    for (int i = 0; i < v_count; ++i) {
-      if (properties[i].index == -1) {
-        StrongConnect(i);
+    sc_components.assign(v_count, -1);
+    scc_count = 0;
+    
+    for (int v = 0; v < v_count; ++v) {
+      if (properties[v].index == -1) {
+        StrongConnect(v);
       }
     }
 
@@ -151,45 +151,43 @@ public:
       out_count += static_cast<int>(is_flow_out[component]);
     }
     
-    // return std::max(in_count, out_count);
-    return 0;
+    return std::max(in_count, out_count);
   }
 
   // DFS-function (name is taken from an article about the algorithm)
   void StrongConnect(int v) {
-    properties[v].index = current_index;
-    properties[v].lowlink = current_index;
-
-    ++current_index;
-
+    properties[v].index = properties[v].lowlink = ++global_index;
     dfs_path.push(v);
     properties[v].on_stack = true;
 
     std::vector<int> children;
     graph.GetNextVertices(v, children);
-
-    for (auto i : children) {
-      if (properties[i].index == -1) {
-        StrongConnect(i);
-        properties[i].lowlink = std::min(properties[v].lowlink, properties[i].lowlink);
+    for (auto child : children) {
+      if (properties[child].index == -1) {
+        StrongConnect(child);
+        properties[v].lowlink = std::min(properties[v].lowlink, properties[child].lowlink);
       }
-      else if (properties[i].on_stack) {
-        properties[v].lowlink = std::min(properties[v].lowlink, properties[i].index);
+      else if (properties[child].on_stack) {
+        properties[v].lowlink = std::min(properties[v].lowlink, properties[child].index);
       }
     }
 
-    // Saving new SCC
-    if (properties[v].index == properties[v].lowlink) {
-      int tmp_v;
-      
-      do {
+    int tmp_v;
+    if (properties[v].lowlink == properties[v].index) {
+      while (dfs_path.top() != v) {
         tmp_v = dfs_path.top();
-        dfs_path.pop();
-        properties[tmp_v].on_stack = false;
-
         sc_components[tmp_v] = scc_count;
-      } while(tmp_v != v);
-    
+        
+        properties[tmp_v].on_stack = false;
+        dfs_path.pop();
+      }
+      
+      // Last vertex in SCC
+      tmp_v = dfs_path.top();
+      sc_components[tmp_v] = scc_count;
+      properties[tmp_v].on_stack = false;
+      dfs_path.pop();
+
       ++scc_count;
     }
   }
@@ -198,16 +196,15 @@ private:
   struct VertexProperties {
     bool on_stack;
     int index;
-    int parent;
     int lowlink;
 
-    VertexProperties() : on_stack(false), index(-1), parent(-1), lowlink(-1) {}
+    VertexProperties() : on_stack(false), index(-1), lowlink(-1) {}
   };
 
   IGraph& graph;
   int v_count; // Vertices count
-  int current_index;
   int scc_count;
+  int global_index;
   
   // Contains strongly connected components belonging for each vertex
   std::vector<int> sc_components;
