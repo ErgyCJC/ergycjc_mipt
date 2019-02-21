@@ -150,8 +150,8 @@ public:
       in_count += static_cast<int>(is_flow_in[component]);
       out_count += static_cast<int>(is_flow_out[component]);
     }
-    
-    return std::max(in_count, out_count);
+
+    return scc_count == 1 ? 0 : std::max(in_count, out_count);
   }
 
   // DFS-function (name is taken from an article about the algorithm)
@@ -225,9 +225,9 @@ int main(int argc, char** argv1) {
         std::cin >> from_v >> to_v;
 
         // Deleting loops
-        if (from_v != to_v) {
+        // if (from_v != to_v) {
             graph.AddEdge(from_v - 1, to_v - 1);
-        }
+        // }
     }
 
     Compresser compresser(graph);
