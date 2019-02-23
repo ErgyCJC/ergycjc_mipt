@@ -1,3 +1,16 @@
+// Task F
+
+// Contest Link: https://contest.yandex.ru/contest/11884/problems/F/
+
+// Дан ориентированный граф.
+// Определите, какое минимальное число ребер необходимо добавить,
+// чтобы граф стал сильносвязным. В графе возможны петли.
+
+// В первой строке указывается число вершин графа V, во второй – число ребер E,
+// в последующих – E пар вершин, задающих ребра.
+
+// Вывести минимальное число ребер k.
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -223,11 +236,7 @@ int main(int argc, char** argv1) {
     
     for (int i = 0; i < edges_count; ++i) {
         std::cin >> from_v >> to_v;
-
-        // Deleting loops
-        // if (from_v != to_v) {
-            graph.AddEdge(from_v - 1, to_v - 1);
-        // }
+        graph.AddEdge(from_v - 1, to_v - 1);
     }
 
     Compresser compresser(graph);
