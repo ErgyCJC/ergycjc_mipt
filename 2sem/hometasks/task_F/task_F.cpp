@@ -32,20 +32,26 @@ struct IGraph {
                                std::vector<int> &vertices) const = 0;
 };
 
-class MatrixGraph : public IGraph {
+class ListGraph : public IGraph {
 public:
-  MatrixGraph(int verticesCount);
 
-  MatrixGraph(const IGraph* source_graph);
+  //*********************//
+
+  ListGraph(const ListGraph& graph);
+
+  ListGraph& operator=(const ListGraph& graph);
+
+  //*********************//
+
+  ListGraph(int verticesCount);
   
-  virtual ~MatrixGraph() override;
+  ListGraph(const IGraph* source_graph);
+  
+  virtual ~ListGraph() override;
+
+  ListGraph& operator=(const IGraph& graph);
 
   virtual void AddEdge(int from, int to) override;
-  
-  void AddEdge(int from, int to, int weight);
-
-  // Returns -1 of the edge doesn't exist
-  int GetEdgeWeight(const int from, const int to) const;
 
   virtual int VerticesCount() const override;
 
@@ -54,21 +60,30 @@ public:
   virtual void GetPrevVertices(int vertex,
                                std::vector<int> &vertices) const override;
 
-  bool ExistsEdge(int v1, int v2);
-
 private:
-  std::vector< std::vector<int> > matrix;
+  std::vector< std::vector<int> > neighbours;
 };
 
-MatrixGraph::MatrixGraph(int verticesCount) {
-  matrix.resize(verticesCount);
-  for(size_t i = 0; i < verticesCount; ++i) {
-      matrix[i].resize(verticesCount, -1);
+//*********************//
+
+  ListGraph::ListGraph(const ListGraph& graph) {
+    this->neighbours = graph.neighbours;
   }
+
+  ListGraph& ListGraph::operator=(const ListGraph& graph) {
+    this->neighbours = graph.neighbours;
+    return *this;
+  }
+
+  //*********************//
+
+ListGraph::ListGraph(int verticesCount) {
+  neighbours.resize(verticesCount);
 }
 
-MatrixGraph::MatrixGraph(const IGraph* source_graph) : MatrixGraph(source_graph->VerticesCount()) {
-    std::vector<int> children;
+ListGraph::ListGraph(const IGraph* source_graph) : ListGraph(source_graph->VerticesCount()) {
+  std::vector<int> children;
+
     for (int i = 0; i < VerticesCount(); ++i) {
         source_graph->GetNextVertices(i, children);
         for (size_t v = 0; v < children.size(); ++v ) {
@@ -77,47 +92,48 @@ MatrixGraph::MatrixGraph(const IGraph* source_graph) : MatrixGraph(source_graph-
     }
 }
 
-MatrixGraph::~MatrixGraph() {}
+ListGraph::~ListGraph() {}
 
-void MatrixGraph::AddEdge(int from, int to) {
-  matrix[from][to] = 1;
+void ListGraph::AddEdge(int from, int to) {
+  neighbours[from].push_back(to);
 }
 
-void MatrixGraph::AddEdge(int from, int to, int weight) {
-  matrix[from][to] = weight;
+int ListGraph::VerticesCount() const {
+  return static_cast<int>(neighbours.size());
 }
 
-int MatrixGraph::GetEdgeWeight(const int from, const int to) const {
-  return matrix[from][to];
-}
-
-int MatrixGraph::VerticesCount() const {
-  return static_cast<int>(matrix.size());
-}
-
-void MatrixGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
+void ListGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
   vertices.clear();
-  
-  for (size_t i = 0; i < matrix.size(); ++i) {
-      if (matrix[vertex][i] != -1) {
-          vertices.push_back(static_cast<int>(i));
+  vertices = neighbours[vertex];
+}
+
+void ListGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
+  vertices.clear();
+
+  for (size_t v = 0; v < neighbours.size(); ++v) {
+    for (size_t i = 0; i < neighbours[v].size(); ++i) {
+      if (neighbours[v][i] == vertex) {
+        vertices.push_back(v);
       }
+    }
   }
 }
 
-void MatrixGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
-  vertices.clear();
+ListGraph& ListGraph::operator=(const IGraph& graph) {
+    neighbours.assign(graph.VerticesCount(), std::vector<int>());
+    for (int i = 0; i < VerticesCount(); ++i) {
+        std::vector<int> children;
+        graph.GetNextVertices(i, children);
 
-  for (size_t i = 0; i < matrix.size(); ++i) {
-      if (matrix[i][vertex] != -1) {
-          vertices.push_back(static_cast<int>(i));
-      }
-  }
+        for (auto v : children) {
+            AddEdge(i, v);
+        }
+    }
+
+    return *this;
 }
 
-bool MatrixGraph::ExistsEdge(int v1, int v2) {
-    return matrix[v1][v2] != 0;
-}
+
 
 //===========================//===========================//===========================//
 
@@ -232,7 +248,7 @@ int main(int argc, char** argv1) {
     int vertices_count, edges_count, from_v, to_v;
     
     std::cin >> vertices_count >> edges_count;
-    MatrixGraph graph(vertices_count);
+    ListGraph graph(vertices_count);
     
     for (int i = 0; i < edges_count; ++i) {
         std::cin >> from_v >> to_v;
