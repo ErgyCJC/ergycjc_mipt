@@ -6,6 +6,15 @@
 
 class SetGraph : public IGraph {
 public:
+
+  //*********************//
+
+  SetGraph(const SetGraph& graph);
+
+  SetGraph& operator=(const SetGraph& graph);
+
+  //*********************//
+
   SetGraph(int verticesCount);
 
   SetGraph(const IGraph* source_graph);

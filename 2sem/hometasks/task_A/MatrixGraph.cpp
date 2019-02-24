@@ -1,5 +1,18 @@
 #include "MatrixGraph.h"
 
+//*****************//
+
+MatrixGraph::MatrixGraph(const MatrixGraph& graph) {
+  this->matrix = graph.matrix;
+}
+
+MatrixGraph& MatrixGraph::operator=(const MatrixGraph& graph) {
+  matrix = graph.matrix;
+  return *this;
+}
+
+//*****************//
+
 MatrixGraph::MatrixGraph(int verticesCount) {
   matrix.resize(verticesCount);
   for(size_t i = 0; i < verticesCount; ++i) {

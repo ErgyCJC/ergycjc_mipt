@@ -6,6 +6,15 @@
 
 class ArcGraph : public IGraph {
 public:
+
+  //*****************//
+
+  ArcGraph(const ArcGraph& graph);
+
+  ArcGraph& operator=(const ArcGraph& graph);
+
+  //*****************//
+
   ArcGraph(const int _vertices_count);
 
   ArcGraph(const IGraph* source_graph);

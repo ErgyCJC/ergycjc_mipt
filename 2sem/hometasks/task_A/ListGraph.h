@@ -5,6 +5,15 @@
 
 class ListGraph : public IGraph {
 public:
+
+  //*********************//
+
+  ListGraph(const ListGraph& graph);
+
+  ListGraph& operator=(const ListGraph& graph);
+
+  //*********************//
+
   ListGraph(int verticesCount);
   
   ListGraph(const IGraph* source_graph);

@@ -1,5 +1,18 @@
 #include "ListGraph.h"
 
+//*********************//
+
+  ListGraph::ListGraph(const ListGraph& graph) {
+    this->neighbours = graph.neighbours;
+  }
+
+  ListGraph& ListGraph::operator=(const ListGraph& graph) {
+    this->neighbours = graph.neighbours;
+    return *this;
+  }
+
+  //*********************//
+
 ListGraph::ListGraph(int verticesCount) {
   neighbours.resize(verticesCount);
 }

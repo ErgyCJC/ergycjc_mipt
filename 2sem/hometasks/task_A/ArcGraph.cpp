@@ -1,5 +1,20 @@
 #include "ArcGraph.h"
 
+//*****************//
+
+ArcGraph::ArcGraph(const ArcGraph& graph) {
+    this->vertices_count = graph.vertices_count;
+    this->edges = graph.edges;
+}
+
+ArcGraph& ArcGraph::operator=(const ArcGraph& graph) {
+    this->vertices_count = graph.vertices_count;
+    this->edges = graph.edges;
+    return *this;
+}
+
+//*****************//
+
 ArcGraph::ArcGraph(const int _vertices_count) : vertices_count(_vertices_count) {}
 
 ArcGraph::ArcGraph(const IGraph* source_graph) : ArcGraph(source_graph->VerticesCount()) {

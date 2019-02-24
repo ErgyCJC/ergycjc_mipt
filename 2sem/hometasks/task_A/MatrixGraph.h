@@ -5,6 +5,15 @@
 
 class MatrixGraph : public IGraph {
 public:
+
+  //*****************//
+
+  MatrixGraph(const MatrixGraph& graph);
+
+  MatrixGraph& operator=(const MatrixGraph& graph);
+
+  //*****************//
+
   MatrixGraph(int verticesCount);
 
   MatrixGraph(const IGraph* source_graph);
@@ -17,7 +26,6 @@ public:
   
   void AddEdge(int from, int to, int weight);
 
-  // Returns -1 of the edge doesn't exist
   int GetEdgeWeight(const int from, const int to) const;
 
   virtual int VerticesCount() const override;

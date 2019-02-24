@@ -1,5 +1,18 @@
 #include "SetGraph.h"
 
+//*********************//
+
+  SetGraph::SetGraph(const SetGraph& graph) {
+    this->neighbours = graph.neighbours;
+  }
+
+  SetGraph& SetGraph::operator=(const SetGraph& graph) {
+    this->neighbours = graph.neighbours;
+    return *this;
+  }
+
+  //*********************//
+
 SetGraph::SetGraph(int verticesCount) {
   neighbours.resize(verticesCount);
 }
