@@ -112,7 +112,6 @@ int CycleSearch(int root_v, IGraph& graph) {
     std::queue<int> bfs_queue;
     bfs_queue.push(root_v);
 
-    // BFS
     while (!bfs_queue.empty()) {
         int current_v = bfs_queue.front();
         bfs_queue.pop();
