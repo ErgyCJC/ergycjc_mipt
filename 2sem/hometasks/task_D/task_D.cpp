@@ -103,7 +103,6 @@ bool isBigraphPart(const IGraph& graph, std::vector<bool>& visited, const int ro
     std::vector<int> colors(graph.VerticesCount(), 0);
     colors[root_v] = 1;
 
-    // BFS
     while (!bfs_queue.empty()) {
         int current_v = bfs_queue.front();
         bfs_queue.pop();
