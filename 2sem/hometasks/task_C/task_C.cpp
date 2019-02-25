@@ -105,7 +105,6 @@ int differentShortestWays(const int& from_v, const int& to_v, const IGraph& grap
   std::queue<int> bfs_queue;
   bfs_queue.push(from_v);
 
-  // BFS
   while(!bfs_queue.empty()){
     int current_v = bfs_queue.front();
     bfs_queue.pop();
