@@ -2,19 +2,25 @@
 
 //*********************//
 
-  SetGraph::SetGraph(const SetGraph& graph) {
-    this->neighbours = graph.neighbours;
+SetGraph::SetGraph(const SetGraph& graph) {
+  neighbours.clear();
+  for (auto table : graph.neighbours) {
+    neighbours.push_back(table);
   }
+}
 
-  SetGraph& SetGraph::operator=(const SetGraph& graph) {
-    this->neighbours = graph.neighbours;
-    return *this;
+SetGraph& SetGraph::operator=(const SetGraph& graph) {
+  neighbours.clear();
+  for (auto table : graph.neighbours) {
+    neighbours.push_back(table);
   }
+  return *this;
+}
 
-  //*********************//
+//*********************//
 
 SetGraph::SetGraph(int verticesCount) {
-  neighbours.resize(verticesCount);
+  neighbours.assign(verticesCount, IntHashTable());
 }
 
 SetGraph::SetGraph(const IGraph* source_graph) : SetGraph(source_graph->VerticesCount()) {
@@ -31,21 +37,7 @@ SetGraph::SetGraph(const IGraph* source_graph) : SetGraph(source_graph->Vertices
 SetGraph::~SetGraph() {}
 
 void SetGraph::AddEdge(int from, int to) {
-  neighbours[from].insert({to, 1});
-}
-
-void SetGraph::AddEdge(int from, int to, int weight) {
-  neighbours[from].insert({to, weight});
-}
-
-int SetGraph::GetEdgeWeight(const int from, const int to) const {
-  if (neighbours[from].find(to) != neighbours[from].end()) {
-    return neighbours[from].at(to);
-  }
-  else {
-    return -1;
-  }
-  
+  neighbours[from].Push(to);
 }
 
 int SetGraph::VerticesCount() const {
@@ -54,35 +46,33 @@ int SetGraph::VerticesCount() const {
 
 void SetGraph::GetNextVertices(int vertex, std::vector<int> &vertices) const {
   vertices.clear();
-  
-  for (size_t i = 0; i < neighbours.size(); ++i) {
-      if (neighbours[vertex].find(i) != neighbours[vertex].end()) {
-          vertices.push_back(static_cast<int>(i));
-      }
+
+  for (int to = 0; to < VerticesCount(); ++to) {
+    if (neighbours[vertex].Find(to)) {
+      vertices.push_back(to);
+    }
   }
 }
 
 void SetGraph::GetPrevVertices(int vertex, std::vector<int> &vertices) const {
   vertices.clear();
 
-  for (size_t i = 0; i < neighbours.size(); ++i) {
-      if (neighbours[i].find(vertex) != neighbours[i].end()) {
-          vertices.push_back(static_cast<int>(i));
-      }
+  for (int from = 0; from < VerticesCount(); ++from) {
+    if (neighbours[from].Find(vertex)) {
+      vertices.push_back(from);
+    }
   }
 }
 
 SetGraph& SetGraph::operator=(const IGraph& graph) {
-  neighbours.assign(graph.VerticesCount(), std::unordered_map<int, int>());
-  
+  neighbours.assign(graph.VerticesCount(), IntHashTable());
+  std::vector<int> children;
+
   for (int i = 0; i < VerticesCount(); ++i) {
-        std::vector<int> children;
-        graph.GetNextVertices(i, children);
-
-        for (auto v : children) {
-            AddEdge(i, v);
-        }
-    }
-
-    return *this;
+      graph.GetNextVertices(i, children);
+      for (size_t v = 0; v < children.size(); ++v ) {
+          AddEdge(i, children[v]);
+      }
+  }
+  return *this;
 }
