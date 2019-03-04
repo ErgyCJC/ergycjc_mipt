@@ -6,13 +6,9 @@
 class MatrixGraph : public IGraph {
 public:
 
-  //*****************//
-
   MatrixGraph(const MatrixGraph& graph);
 
   MatrixGraph& operator=(const MatrixGraph& graph);
-
-  //*****************//
 
   MatrixGraph(int verticesCount);
 
