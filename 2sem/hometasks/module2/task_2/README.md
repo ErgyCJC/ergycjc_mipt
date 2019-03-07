@@ -19,7 +19,7 @@ USD/RUB: 0.02
 Выведите YES, если арбитраж есть, и NO, иначе.
 
 ### Формирование графа
-Пусть даны n валют, ![equation](https://latex.codecogs.com/gif.latex?\omega(i,&space;j)&space;-) функция курса i-ой валюты к j-ой.
+Пусть даны n валют, ![equation](https://latex.codecogs.com/gif.latex?\omega(i,&space;j)) - функция курса i-ой валюты к j-ой.
 
 Если для некоторой валюты существует последовательность обменов, при которой конечная денежная сумма в той же валюте больше изначальной, то верно:
 
@@ -31,8 +31,8 @@ USD/RUB: 0.02
 
 ![equation](https://latex.codecogs.com/gif.latex?ln&space;\frac{1}{\omega(1,&space;2)}&space;&plus;&space;ln&space;\frac{1}{\omega(2,&space;3)}&space;\times&space;\dotsc&space;&plus;&space;ln&space;\frac{1}{\omega(k,&space;1)}&space;<&space;0)
 
-![equation](https://latex.codecogs.com/gif.latex?-ln&space;\:&space;\omega(1,&space;2)&space;-ln&space;\:&space;\omega(2,&space;3)&space;-&space;\dotsc&space;-&space;ln&space;\:&space;\omega(k,&space;1)&space;<&space;0)
+![equation](https://latex.codecogs.com/gif.latex?-ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;\dotsc&space;-&space;ln&space;\big(&space;\omega(k,&space;1)&space;\big)&space;<&space;0)
 
-Задача свелась к нахождению цикла отрицательного веса в графе с вершинами-валютами и рёбрами между конвертируемыми валютами с весами ![equation](-ln\;\omega(i, j)) для каждой представленной вершины: если хотя бы для одной он есть, то возможны валютные махинации.
+Задача свелась к нахождению цикла отрицательного веса в графе с вершинами-валютами и рёбрами между конвертируемыми валютами с весами ![equation](-ln;\omega(i, j)) для каждой представленной вершины: если хотя бы для одной он есть, то возможны валютные махинации.
 
-Проверка на такой цикл для каждой валюты (читай вершины графа) осуществляется алгоритмом Беллмана_Форда за ![equation](https://latex.codecogs.com/gif.latex?T(|V|,\,|E|)&space;=&space;\mathcal{O}(|V||E|)).
+Проверка на такой цикл для каждой валюты (читай вершины графа) осуществляется алгоритмом Беллмана_Форда за ![equation](https://latex.codecogs.com/gif.latex?T(|V|,&space;|E|)&space;=&space;\mathcal{O}(|V||E|)).
