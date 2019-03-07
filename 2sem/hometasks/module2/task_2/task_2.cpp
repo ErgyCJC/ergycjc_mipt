@@ -1,6 +1,22 @@
+// Задача B
+
+// Contest link: https://contest.yandex.ru/contest/12173/problems/B
+
+// Необходимо написать торгового советника для поиска арбитража.
+// Арбитраж - это торговля по цепочке различных валют в надежде заработать на небольших различиях в коэффициентах.
+
+// Первая строка содержит число N – количество возможных валют (определяет размер таблицы котировок). 
+// Далее следует построчное представление таблицы. Диагональные элементы (i, i) пропущены (подразумевается, что курс валюты к себе же 1.0). 
+// В элементе таблицы (i, j) содержится обменный курс i->j. 
+// Если обмен в данном направлении не производится, то -1.
+
+// Выведите YES, если арбитраж есть, и NO, иначе.
+
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <cmath>
+#include <climits>
 
 //============================//============================//============================//
 
@@ -38,23 +54,24 @@ int DoubleArcGraph::Size() const {
 }
 
 bool DoubleArcGraph::ContainsNegativeCycle() {
-    // Bellman-Ford negative cycle searching algorithm    
-    for (int source_v = 0; source_v < v_count; source_v++) {
-        std::vector<double> distance(v_count, -1.0);
-        distance[source_v] = 1.0;
+    // Bellman-Ford negative cycle searching algorithm; T(|V|, |E|) = O(2*|E|*|V|) = O(|E|*|V|)
+    for (int source_v = 0; source_v < v_count - 1; ++source_v) {
+        std::vector<long double> distance(v_count, __DBL_MAX__);
+        distance[source_v] = 0.0;
         
         for (auto e : edges) {
-            if (distance[e.from] != -1.0 && distance[e.to] < distance[e.from] * e.weight) {
-                distance[e.to] = distance[e.from] * e.weight;
+            if (distance[e.from] != __DBL_MAX__ && distance[e.from] + e.weight < distance[e.to] ) {
+                distance[e.to] = distance[e.from] + e.weight;
             }
         }
 
         for (auto e : edges) {
-            if (distance[e.from] != -1.0 && distance[e.to] < distance[e.from] * e.weight)
+            if (distance[e.from] != __DBL_MAX__ && distance[e.from] + e.weight < distance[e.to] ) {
                 return true;
+            }
         }
     }
-    
+
     return false;
 }
 
@@ -74,7 +91,7 @@ int main(int argc, char** argv) {
             }
 
             std::cin >> value;
-            graph.AddEdge(i, j, value);
+            graph.AddEdge(i, j, -std::log10(value));
         }
     }
 
