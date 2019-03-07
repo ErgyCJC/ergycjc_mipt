@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
             }
 
             std::cin >> value;
-            graph.AddEdge(i, j, -std::log10(value));
+            graph.AddEdge(i, j, -std::log(value));
         }
     }
 
