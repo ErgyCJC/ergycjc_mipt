@@ -29,7 +29,7 @@ USD/RUB: 0.02
 
 ![equation](https://latex.codecogs.com/gif.latex?ln&space;\Bigg(&space;\frac{1}{\omega(1,&space;2)}\times&space;\frac{1}{\omega(2,&space;3)}&space;\times&space;\dotsc&space;\times&space;\frac{1}{\omega(k,&space;1)}&space;\Bigg)&space;<&space;0)
 
-![equation](https://latex.codecogs.com/gif.latex?ln&space;\frac{1}{\omega(1,&space;2)}&space;&plus;&space;ln&space;\frac{1}{\omega(2,&space;3)}&space;\times&space;\dotsc&space;&plus;&space;ln&space;\frac{1}{\omega(k,&space;1)}&space;<&space;0)
+![equation](https://latex.codecogs.com/gif.latex?ln&space;\frac{1}{\omega(1,&space;2)}&space;&plus;&space;ln&space;\frac{1}{\omega(2,&space;3)}&space;&plus;&space;\dotsc&space;&plus;&space;ln&space;\frac{1}{\omega(k,&space;1)}&space;<&space;0)
 
 ![equation](https://latex.codecogs.com/gif.latex?-ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;\dotsc&space;-&space;ln&space;\big(&space;\omega(k,&space;1)&space;\big)&space;<&space;0)
 
