@@ -196,6 +196,7 @@ void ListGraph::GetConnections(int v, std::vector<std::pair<int, int>>& result) 
 void ListGraph::Add(int from_v, int to_v, int weight) {
     edges[from_v].push_back(std::make_pair(to_v, weight));
 }
+
 int ListGraph::MinRouteLength(int from_v, int to_v) {
     // Dijkstra's algorithm on binary heap
     // Here pairs usage (first, second): first - destination vertex, second - edge weight
