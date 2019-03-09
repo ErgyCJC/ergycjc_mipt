@@ -33,6 +33,6 @@ USD/RUB: 0.02
 
 ![equation](https://latex.codecogs.com/gif.latex?-ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;ln&space;\big(&space;\omega(1,&space;2)&space;\big)&space;-&space;\dotsc&space;-&space;ln&space;\big(&space;\omega(k,&space;1)&space;\big)&space;<&space;0)
 
-Задача свелась к нахождению цикла отрицательного веса в графе с вершинами-валютами и рёбрами между конвертируемыми валютами с весами ![equation](https://latex.codecogs.com/gif.latex?-ln&space;\big(&space;\omega(i,&space;j)&space;\big)) для каждой представленной вершины: если хотя бы для одной он есть, то возможны валютные махинации.
+Задача свелась к нахождению цикла отрицательного веса в графе с вершинами-валютами и рёбрами между конвертируемыми валютами с весами ![equation](https://latex.codecogs.com/gif.latex?-ln&space;\big(&space;\omega(i,&space;j)&space;\big)): если он есть, то возможны валютные махинации.
 
-Проверка на такой цикл для каждой валюты (читай вершины графа) осуществляется алгоритмом Беллмана-Форда за ![equation](https://latex.codecogs.com/gif.latex?T(|V|,&space;|E|)&space;=&space;\mathcal{O}(|V||E|)).
+Проверка на такой цикл осуществляется алгоритмом Беллмана-Форда за ![equation](https://latex.codecogs.com/gif.latex?T(|V|,&space;|E|)&space;=&space;\mathcal{O}(|V||E|)).
