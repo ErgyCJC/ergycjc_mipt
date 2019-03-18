@@ -27,7 +27,7 @@ class Some(A, B):
 
 -
 
-```
+``` python
 class Vector:
 	def __init__(self, x, y, color='white'):
 		print('Initializing...')
@@ -41,7 +41,7 @@ class Vector:
 
 `__add__` - переопределение "плюса"
 
-```
+``` python
 > vec1 = Vector(1, 2, 'red')
 > vec2 = Vector(3, 4, 'blue')
 > print(vec1 + vec2)
@@ -50,7 +50,7 @@ class Vector:
 
 -
 
-str - mutable, поэтому лучше использовать .format(), а не str1 + 'gggggaaaa' + str2
+`str` неизменяема, поэтому лучше использовать .format(), а не str1 + 'gggggaaaa' + str2
 
 += для str хорошо оптимизирована
 
@@ -73,12 +73,12 @@ str - mutable, поэтому лучше использовать .format(), а 
 
 `__eq__()`, `__ge__()`, `__le__()` и т.д. - различные сравнения, в принципе, не обязано возвращать `bool`, но не надо так делать
 
-```
+``` python
 def __eq__(self, obj2):
 	return 2
 ```
 
-```
+``` python
 > vec1 == vec2
 > 2
 ```
@@ -91,7 +91,7 @@ def __eq__(self, obj2):
 
 `__abs__()` - модуль
 
-```
+``` python
 def __abs__(self):
 	return self.x ** 2 + self.y ** 2
 ```
@@ -106,7 +106,7 @@ def __abs__(self):
 
 Наличие этого метода делает объект callable, проверяется ф-цией `callable()` 
 
-```
+``` python
 > callable(int)
 > True
 > callable(2)
@@ -119,7 +119,11 @@ def __abs__(self):
 
 `__getitem__()` - доступ по индексу в квадратных скобках
 
-```
+``` python
 def __getitem__(self, index):
 	return [self.x, self.y][index] # Такая реализация вполне неплоха
 ```
+
+`__len__()` - размер; python умеет итерироваться не только по объектам с `next()`, но и с `__getitem__()` в связке с `__len__()` (нужны оба метода!), но правильней через интерфейс `Iterable`
+
+-
