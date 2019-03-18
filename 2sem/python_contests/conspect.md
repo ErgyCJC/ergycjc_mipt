@@ -112,3 +112,14 @@ def __abs__(self):
 > callable(2)
 > False
 ```
+
+-
+
+`__next__()` и `__iter__()` реализуют интерфейс `Iterable`
+
+`__getitem__()` - доступ по индексу в квадратных скобках
+
+```
+def __getitem__(self, index):
+	return [self.x, self.y][index] # Такая реализация вполне неплоха
+```
