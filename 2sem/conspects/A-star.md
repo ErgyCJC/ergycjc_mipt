@@ -20,7 +20,7 @@ __A-star__ - модификация алгоритма Дейкстры, исп�
 
 Если каждая клетка дополнительно имеет свой вес, то рассчитывается средний вес ребра для эвристики:
 
-[equation](https://latex.codecogs.com/gif.latex?\omega_{average}&space;=&space;\frac{&space;\sum_{&space;i=1&space;}^{&space;|E|&space;}&space;\omega(e_i))&space;}{|E|})
+[equation](https://latex.codecogs.com/gif.latex?\omega_{average}=\frac{&space;\sum_{i=1}^{|E|}\omega(e_i))}{|E|})
 
 
 | []() |  |  |  |  |
