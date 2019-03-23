@@ -1,5 +1,5 @@
 // Задача C 'Восьминашки'
-// Contest link: https://contest.yandex.ru/contest/12173/problems/C
+// Contest link: https://contest.yandex.ru/contest/12173/problems/C/
 //
 // Во входном файле содержится начальная конфигурация головоломки – 3 строки по 3 числа в каждой.
 // Если решение существует, то в первой строке выходного файла выведите минимальное число перемещений костяшек,
@@ -7,7 +7,6 @@
 // а во второй строке выведите соответствующую последовательность ходов: L означает, что в результате перемещения костяшки
 // пустая ячейка сдвинулась влево, R – вправо, U – вверх, D – вниз. Если таких последовательностей несколько, то выведите любую из них.
 // Если же выигрышная конфигурация недостижима, то выведите в выходной файл одно число −1.
-
 
 #include <fstream>
 #include <vector>
@@ -22,7 +21,6 @@ typedef unsigned long long ull;
 struct State {
     ull code;
     int zero_place;
-    int
     std::vector<char> path;
 
     State();
@@ -31,17 +29,20 @@ struct State {
     State(const State& _state);
     State& operator=(const State& _state);
 
+    // Is it possible to win with the board configuration
     bool Solvable() const;
 
+    // Set chip value by index from 0 to 8
     void Set(int index, ull value);
+    
+    // Get chip value by index
     int Get(int index) const;
 
+    // Sliding zero-chip
     State SlideZeroUp() const;
     State SlideZeroDown() const;
     State SlideZeroRight() const;
     State SlideZeroLeft() const;
-
-    int Potential() const;
 
     const ull masks[9] = {0x00000000F,
                         0x0000000F0,
@@ -64,22 +65,20 @@ struct State {
                                 0x0FFFFFFFF};
 };
 
-struct StateCmp {
-    bool operator()(const State& obj1, const State& obj2) {
-        return obj1.Potential() > obj2.Potential();
-    }
-};
-
 class Solver {
 public:
     Solver(const State& state);
 
+    // BFS-based solving puzzle
     void Solve(std::ostream& out);
 
+    // Add state into queue if it is correct operation
     void Use(const State& state);
 
 private:
     State init_state;
+
+    // Turns sequence for printing
     std::vector<char> turns;
 
     std::queue<State> states;
@@ -196,23 +195,6 @@ State State::SlideZeroLeft() const {
     return new_state;
 }
 
-int State::Potential() const {
-    int distance = 0;
-    
-    for (int i = 0; i < 3; ++i) {
-        for( int j = 0; j < 3; ++j) {
-            int chip = Get(j * 3 + i);
-            if (chip == 0) {
-                chip = 9;
-            }
-            
-            distance += std::abs(zero_place % 3 - (chip - 1) % 3) + std::abs(zero_place / 3 - (chip - 1) / 3);
-        }
-    }
-
-    return distance;
-}
-
 bool State::Solvable() const {
     int N = 0;
 
@@ -240,6 +222,7 @@ void Solver::Solve(std::ostream& out) {
         return;
     }
 
+    // Target state for comparing
     State cmp_state;
     cmp_state.Set(8, 0);
     cmp_state.zero_place = 8;
@@ -247,10 +230,12 @@ void Solver::Solve(std::ostream& out) {
         cmp_state.Set(i, i+1);
     }
 
+    // BFS initializing
     visited.clear();
     visited.insert(init_state.code);
     states.push(init_state);
 
+    // BFS
     State curr_state;
     
     while (!states.empty()) {
@@ -262,6 +247,7 @@ void Solver::Solve(std::ostream& out) {
             break;
         }
 
+        // For possible next states
         if (curr_state.zero_place >= 3) {
             Use(curr_state.SlideZeroUp());
         }
