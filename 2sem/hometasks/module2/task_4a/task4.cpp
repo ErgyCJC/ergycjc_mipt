@@ -322,7 +322,7 @@ bool Solver::Use(const State& state) {
         }
 
         used.insert(state.code);
-        states.Add(state);
+        states.push(state);
     }
 
     return false;
