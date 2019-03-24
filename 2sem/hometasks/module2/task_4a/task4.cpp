@@ -1,14 +1,3 @@
-// Задача D(1)
-// Contest link: https://contest.yandex.ru/contest/12173/problems/D1/
-
-// Написать алгоритм для решения игры в “пятнашки”.
-// Достаточно найти хотя бы какое-то решение. Число перемещений костяшек не обязано быть минимальным.
-// Если решение существует, то в первой строке выходного файла выведите минимальное число перемещений костяшек,
-// которое нужно сделать, чтобы достичь выигрышной конфигурации, а во второй строке выведите соответствующую
-// последовательность ходов: L означает, что в результате перемещения костяшки пустая ячейка сдвинулась влево,
-// R – вправо, U – вверх, D – вниз. Если таких последовательностей несколько, то выведите любую из них.
-//Если же выигрышная конфигурация недостижима, то выведите в выходной файл одно число −1.
-
 #include <vector>
 #include <unordered_set>
 #include <queue>
@@ -208,6 +197,7 @@ State State::SlideUp() const {
     new_state.zero_place = chip_index;
     new_state.heuristic = new_state.Heuristic();
     ++new_state.turns;
+
     new_state.path.push_back('D');
 
     return new_state;
@@ -275,6 +265,22 @@ int State::Heuristic() const {
         }
 
         distance += std::abs((i_chip - 1) % 4 - i % 4) + std::abs((i_chip - 1) / 4 - i / 4);
+    }
+
+	for (int row = 0; row< 4; ++row) {
+        for (int collumn = 0; collumn< 4; ++collumn) {
+            for (int i = collumn + 1; i < 4; ++i) {
+                int index1 = 4 * row + collumn;
+                int index2 = 4 * row + i;
+
+                int chip1 = Get(index1) - 1;
+                int chip2 = Get(index2) - 1;
+                
+                if (chip1 != -1 && chip2 != -1 && chip1 / 4 == row && chip2 / 4 == row && chip1 > chip2) {
+                    distance += 2;
+                }
+            }
+        }
     }
 
     return distance * 17 + turns * 10;
