@@ -6,12 +6,42 @@
 
 typedef unsigned long long ull;
 
+template <class T>
+class BinHeap {
+public:
+    BinHeap();
+
+    ~BinHeap();
+
+    BinHeap(const BinHeap& heap_obj);
+
+    BinHeap& operator=(const BinHeap& heap_obj);
+
+    void Add(T key);
+
+    T PopTop();
+
+    T& GetTop();
+
+    bool Empty() const;
+
+private:
+    T *buffer;
+    int buffer_size;
+    int size;
+
+    void SiftUp(int index);
+
+    void SiftDown(int index);
+};
+
+// Puzzle State
 struct State {
 
-    ull code;
+    ull code; // Board encoding : 'board' --> ull
     int zero_place;
     ull turns;
-    ull heuristic;
+    ull heuristic; // Heuristic potential for the state
     std::vector<char> path;
 
     State();
@@ -20,12 +50,15 @@ struct State {
     State(const State& state);
     State& operator=(const State& state);
 
+    bool operator>(const State& state);
+
     bool Solvable() const;
 
     void Set(int index, ull value);
 
     int Get(int index) const;
 
+    // Move gap (yeah, turns' letters are inversed)
     State SlideUp() const;
 
     State SlideDown() const;
@@ -34,6 +67,7 @@ struct State {
 
     State SlideLeft() const;
 
+    // Count Heuristic
     int Heuristic() const;
 
     const ull masks[16] = {0x000000000000000F,
@@ -71,12 +105,14 @@ struct State {
                                    0x0FFFFFFFFFFFFFFF};
 };
 
+// State comparator for priority_queue
 struct StateCmp {
     bool operator()(const State& first, const State& second) {
         return first.heuristic > second.heuristic;
     }
 };
 
+// Puzzle solver
 class Solver {
 public:
 
@@ -86,12 +122,13 @@ public:
 
 private:
     State init_state;
-    std::vector<char> turns_seq;
     State final_state;
+    std::vector<char> turns_seq;
 
     std::priority_queue<State, std::vector<State>, StateCmp> states;
     std::unordered_set<ull> used;
 
+    // Processing and adding state into the priority_queue in A*
     bool Use(const State& state);
 };
 
@@ -101,23 +138,17 @@ int main(int argc, char** argv) {
     State state;
     int chip;
 
-    State final_state;
-
+    // Initializing start state
     for (int i = 0; i < 16; i++) {
         std::cin >> chip;
         if (chip == 0) {
             state.zero_place = i;
         }
         state.Set(i, chip);
-
-        final_state.Set(i, (i == 15 ? 0 : i + 1));
     }
     state.heuristic = state.Heuristic();
 
-    if (state.code == final_state.code) {
-        std::cout << 0;
-    }
-    else if (!state.Solvable()) {
+    if (!state.Solvable()) {
         std::cout << -1;
     }
     else {
@@ -136,9 +167,9 @@ State::State() : code(0), turns(0) {}
 State::~State() {}
 
 State::State(const State& state) : code(state.code),
-                                   turns(state.turns),
-                                   heuristic(state.heuristic),
-                                   path(state.path),
+                                    turns(state.turns),
+                                    heuristic(state.heuristic),
+                                    path(state.path),
                                     zero_place(state.zero_place) {}
 
 State& State::operator=(const State& state) {
@@ -151,10 +182,13 @@ State& State::operator=(const State& state) {
     return *this;
 }
 
+bool State::operator>(const State& state) {
+    return code > state.code;
+}
+
 void State::Set(int index, ull value) {
     code = (code & inverse_masks[index]) | (value << (index << 2));
 }
-
 
 int State::Get(int index) const {
     return (code & masks[index]) >> (index << 2);
@@ -249,8 +283,8 @@ State State::SlideLeft() const {
 }
 
 int State::Heuristic() const {
-    int h_value = 0;
-
+    //  Manhattan distances
+    int distance = 0;
     for (int i = 0; i < 16; i++) {
         int i_chip = Get(i);
 
@@ -258,10 +292,10 @@ int State::Heuristic() const {
             continue;
         }
 
-        h_value += std::abs((i_chip - 1) % 4 - i % 4) + std::abs((i_chip - 1) / 4 - i / 4);
+        distance += std::abs((i_chip - 1) % 4 - i % 4) + std::abs((i_chip - 1) / 4 - i / 4);
     }
 
-    return h_value;
+    return distance * 17 + turns * 10;
 }
 
 Solver::Solver(const State& state) : init_state(state) {
@@ -271,6 +305,7 @@ Solver::Solver(const State& state) : init_state(state) {
 }
 
 void Solver::Solve() {
+    // A* algorithm
     used.clear();
 
     states.push(init_state);
@@ -320,4 +355,122 @@ bool Solver::Use(const State& state) {
     }
 
     return false;
+}
+
+//===============================//===============================//===============================//
+
+template <class T>
+BinHeap<T>::BinHeap() : buffer_size(1), size(0) {
+    buffer = new T[buffer_size];
+}
+
+template <class T>
+BinHeap<T>::~BinHeap() {
+    delete[] buffer;
+}
+
+template <class T>
+BinHeap<T>::BinHeap(const BinHeap& heap_obj) {
+    size = heap_obj.size;
+    buffer_size = heap_obj.buffer_size;
+
+    buffer = new T[buffer_size];
+    for (int i = 0; i < size; ++i) {
+        buffer[i] = heap_obj.buffer[i];
+    }
+}
+
+template <class T>
+BinHeap<T>& BinHeap<T>::operator=(const BinHeap& heap_obj) {
+    size = heap_obj.size;
+    buffer_size = heap_obj.buffer_size;
+
+    buffer = new T[buffer_size];
+    for (int i = 0; i < size; ++i) {
+        buffer[i] = heap_obj.buffer[i];
+    }
+
+    return *this;
+}
+
+template <class T>
+void BinHeap<T>::Add(T key){
+    if (size == buffer_size) {
+        T *tmp_buffer = new T[buffer_size * 2];
+        
+        for (int i = 0; i < size; ++i) {
+            tmp_buffer[i] = buffer[i];
+        }
+
+        buffer_size *= 2;
+        delete[] buffer;
+        buffer = tmp_buffer;
+    }
+
+    buffer[size] = key;
+    ++size;
+    SiftUp(size - 1);
+}
+
+template <class T>
+T BinHeap<T>::PopTop() {
+    T result = buffer[0];
+    buffer[0] = buffer[size - 1];
+    --size;
+
+    if (size * 2 == buffer_size) {
+        T *tmp_buffer = new T[size];
+        
+        for (int i = 0; i < size; ++i) {
+            tmp_buffer[i] = buffer[i];
+        }
+
+        buffer_size = size;
+        delete[] buffer;
+        buffer = tmp_buffer;
+    }
+    
+    SiftDown(0);
+    return result;
+}
+
+template <class T>
+T& BinHeap<T>::GetTop() {
+    return buffer[0];
+}
+
+template <class T>
+bool BinHeap<T>::Empty() const {
+    return size == 0;
+}
+
+template <class T>
+void BinHeap<T>::SiftUp(int index) {
+    while (index != 0 && buffer[index] > buffer[(index - 1) / 2]) {
+        std::swap(buffer[index], buffer[(index - 1) / 2]);
+        index = (index - 1) / 2;
+    }
+}
+
+template <class T>
+void BinHeap<T>::SiftDown(int index) {
+    while (index < size) {
+        int largest = index;
+
+        if (index * 2 + 1 < size && buffer[index * 2 + 1] > buffer[largest]) {
+            largest = index * 2 + 1;
+        }
+        if (index * 2 + 2 < size && buffer[index * 2 + 2] > buffer[largest]) {
+            largest = index * 2 + 2;
+        }
+
+        if (largest != index) {
+            std::swap(buffer[index], buffer[largest]);
+        }
+        else {
+            break;
+        }
+
+        index = largest;
+    }
 }
