@@ -1,0 +1,60 @@
+Vertices count: 2
+Approximated path cost: 0.71361
+Estimated time: 0.022428 ms
+Accurate path cost: 0.440081
+Estimated time: 0.005486 ms
+
+Vertices count: 3
+Approximated path cost: 2.10262
+Estimated time: 0.010039 ms
+Accurate path cost: 1.73109
+Estimated time: 0.009602 ms
+
+Vertices count: 4
+Approximated path cost: 1.92684
+Estimated time: 0.015956 ms
+Accurate path cost: 1.05908
+Estimated time: 0.0308 ms
+
+Vertices count: 5
+Approximated path cost: 3.16672
+Estimated time: 0.013904 ms
+Accurate path cost: 2.78902
+Estimated time: 0.174885 ms
+
+Vertices count: 6
+Approximated path cost: 2.69665
+Estimated time: 0.016037 ms
+Accurate path cost: 1.90894
+Estimated time: 1.3207 ms
+
+Vertices count: 7
+Approximated path cost: 4.62953
+Estimated time: 0.018004 ms
+Accurate path cost: 2.65774
+Estimated time: 11.3932 ms
+
+Vertices count: 8
+Approximated path cost: 5.18396
+Estimated time: 0.022795 ms
+Accurate path cost: 2.93764
+Estimated time: 93.7721 ms
+
+Vertices count: 9
+Approximated path cost: 7.72655
+Estimated time: 0.022128 ms
+Accurate path cost: 3.99047
+Estimated time: 857.71 ms
+
+Vertices count: 10
+Approximated path cost: 7.2289
+Estimated time: 0.021114 ms
+Accurate path cost: 4.01371
+Estimated time: 10705.8 ms
+
+Vertices count: 11
+Approximated path cost: 8.85721
+Estimated time: 0.025781 ms
+Accurate path cost: 6.85258
+Estimated time: 133667 ms
+
