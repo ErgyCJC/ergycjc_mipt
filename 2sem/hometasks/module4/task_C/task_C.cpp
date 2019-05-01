@@ -30,9 +30,9 @@ struct Segment {
     }
 };
 
-class RMQSolver {
+class Solver {
 public:
-    RMQSolver(std::vector<int>& _seq) : seq(_seq), seq_size(seq.size()) {
+    Solver(std::vector<int>& _seq) : seq(_seq), seq_size(seq.size()) {
         // Построение дерева отрезков
         tree.resize(seq_size * 4);
         BuildTree(1, 0, seq_size - 1);
@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
             std::cin >> elem;
         }
 
-        RMQSolver solver(sequence);
+        Solver solver(sequence);
 
         for (int i = 0; i < requests_count; ++i) {
             int left, right;
