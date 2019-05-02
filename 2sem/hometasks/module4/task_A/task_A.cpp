@@ -31,7 +31,7 @@ public:
         // Инициализация первой колонки SparseTable:
         // обе первые статистики для промежутка из 1 элемента - сам элемент
         for (int elem_index = 0; elem_index < elements_count; ++elem_index) {
-            sparse_table[0][elem_index]. = std::make_pair(seq[elem_index], seq[elem_index]);
+            sparse_table[0][elem_index] = std::make_pair(seq[elem_index], seq[elem_index]);
         }
 
         // Рекурсивное заполнение SparseTable
