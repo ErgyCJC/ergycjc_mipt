@@ -193,7 +193,36 @@ private:
     }
 
     void DeepCopy(const StringArray& original_array) {
-        
+        std::queue<TreapNode*> original_nodes;
+        std::queue<TreapNode**> new_nodes;
+
+        tree_root = nullptr;
+
+        if (original_array.tree_root == nullptr) {
+            return;
+        }
+
+        original_nodes.push(original_array.tree_root);
+        new_nodes.push(&tree_root);
+
+        while (!original_nodes.empty()) {
+            TreapNode* original_node = original_nodes.front();
+            original_nodes.pop();
+            
+            TreapNode** new_node = new_nodes.front();
+            new_nodes.pop();
+
+            *new_node = new TreapNode(original_node->line);
+
+            if (original_node->left != nullptr) {
+                original_nodes.push(original_node->left);
+                new_nodes.push(&(*new_node)->left);
+            }
+            if (original_node->right != nullptr) {
+                original_nodes.push(original_node->right);
+                new_nodes.push(&(*new_node)->right);
+            }
+        }
     }
 };
 
